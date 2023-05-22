@@ -1,4 +1,5 @@
 ## AWS Lambda Go API Proxy [![Build Status](https://travis-ci.org/awslabs/aws-lambda-go-api-proxy.svg?branch=master)](https://travis-ci.org/awslabs/aws-lambda-go-api-proxy)
+
 aws-lambda-go-api-proxy makes it easy to run Go APIs written with frameworks such as [Gin](https://github.com/gin-gonic/gin) with AWS Lambda and Amazon API Gateway.
 
 ## Getting started
@@ -11,7 +12,7 @@ $ go get github.com/aws/aws-lambda-go/events
 $ go get github.com/aws/aws-lambda-go/lambda
 
 # Next, install the core library.
-$ go get github.com/awslabs/aws-lambda-go-api-proxy/...
+$ go get github.com/hohmannr/aws-lambda-go-api-proxy/...
 ```
 
 ### Standard library
@@ -26,7 +27,7 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/httpadapter"
 )
 
 func main() {
@@ -55,7 +56,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/awslabs/aws-lambda-go-api-proxy/gin"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
 )
 
@@ -102,7 +103,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
+	fiberadapter "github.com/hohmannr/aws-lambda-go-api-proxy/fiber"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -134,9 +135,11 @@ func main() {
 ```
 
 ## Other frameworks
+
 This package also supports [Negroni](https://github.com/urfave/negroni), [GorillaMux](https://github.com/gorilla/mux), and plain old `HandlerFunc` - take a look at the code in their respective sub-directories. All packages implement the `Proxy` method exactly like our Gin sample above.
 
 ## Deploying the sample
+
 We have included a [SAM template](https://github.com/awslabs/serverless-application-model) with our sample application. You can use the [AWS CLI](https://aws.amazon.com/cli/) to quickly deploy the application in your AWS account.
 
 First, build the sample application by running `make` from the `aws-lambda-go-api-proxy` directory.
@@ -157,6 +160,7 @@ $ aws cloudformation deploy --template-file output-sam.yaml --stack-name YOUR_ST
 Using the CloudFormation console, you can find the URL for the newly created API endpoint in the `Outputs` tab of the sample stack - it looks sample like this: `https://xxxxxxxxx.execute-api.xx-xxxx-x.amazonaws.com/Prod/pets`. Open a browser window and try to call the URL.
 
 ## API Gateway context and stage variables
+
 ~~The `RequestAccessor` object, and therefore `GinLambda`, automatically marshals the API Gateway request context and stage variables objects and stores them in custom headers in the request: `X-GinLambda-ApiGw-Context` and `X-GinLambda-ApiGw-StageVars`. While you could manually unmarshal the json content into the `events.APIGatewayProxyRequestContext` and `map[string]string` objects, the library exports two utility methods to give you easy access to the data.~~
 
 The gateway context, stage variables and lambda runtime variables are automatically populate to the context.
@@ -179,9 +183,10 @@ stageVarValue := apiGwStageVars["MyStageVar"]
 ```
 
 ## Supporting other frameworks
+
 The `aws-lambda-go-api-proxy`, alongside the various adapters, declares a `core` package. The `core` package, contains utility methods and interfaces to translate API Gateway proxy events into Go's default `http.Request` and `http.ResponseWriter` objects.
 
-You can see that the [`ginlambda.go`](gin/adapter.go) file extends the `RequestAccessor` struct defined in the [`request.go`](core/request.go) file.  `RequestAccessor` gives you access to the `ProxyEventToHTTPRequest()` method.
+You can see that the [`ginlambda.go`](gin/adapter.go) file extends the `RequestAccessor` struct defined in the [`request.go`](core/request.go) file. `RequestAccessor` gives you access to the `ProxyEventToHTTPRequest()` method.
 
 The `GinLambda` object is initialized with an instance of `gin.Engine`. `gin.Engine` implements methods defined in the `http.Handler` interface.
 

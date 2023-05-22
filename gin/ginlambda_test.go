@@ -5,8 +5,8 @@ import (
 	"log"
 
 	"github.com/aws/aws-lambda-go/events"
-	ginadapter "github.com/awslabs/aws-lambda-go-api-proxy/gin"
 	"github.com/gin-gonic/gin"
+	ginadapter "github.com/hohmannr/aws-lambda-go-api-proxy/gin"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -99,7 +99,8 @@ var _ = Describe("GinLambdaALB tests", func() {
 				Path:       "/ping",
 				RequestContext: events.ALBTargetGroupRequestContext{
 					ELB: events.ELBContext{TargetGroupArn: " ad"},
-				}}
+				},
+			}
 
 			resp, err := adapter.Proxy(req)
 
