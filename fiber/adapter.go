@@ -14,7 +14,7 @@ import (
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/valyala/fasthttp"
 
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 )
 
 // FiberLambda makes it easy to send API Gateway proxy events to a fiber.App.
@@ -64,7 +64,6 @@ func (f *FiberLambda) ProxyWithContextV2(ctx context.Context, req events.APIGate
 }
 
 func (f *FiberLambda) proxyInternal(req *http.Request, err error) (events.APIGatewayProxyResponse, error) {
-
 	if err != nil {
 		return core.GatewayTimeout(), core.NewLoggedError("Could not convert proxy event to request: %v", err)
 	}
@@ -81,7 +80,6 @@ func (f *FiberLambda) proxyInternal(req *http.Request, err error) (events.APIGat
 }
 
 func (f *FiberLambda) proxyInternalV2(req *http.Request, err error) (events.APIGatewayV2HTTPResponse, error) {
-
 	if err != nil {
 		return core.GatewayTimeoutV2(), core.NewLoggedError("Could not convert proxy event to request: %v", err)
 	}

@@ -7,7 +7,7 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/awslabs/aws-lambda-go-api-proxy/handlerfunc"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/handlerfunc"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -30,7 +30,8 @@ var _ = Describe("HandlerFuncAdapter ALB tests", func() {
 				Path:       "/",
 				RequestContext: events.ALBTargetGroupRequestContext{
 					ELB: events.ELBContext{TargetGroupArn: " ad"},
-				}}
+				},
+			}
 
 			resp, err := adapter.ProxyWithContext(context.Background(), req)
 

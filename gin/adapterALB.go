@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 	"github.com/gin-gonic/gin"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 )
 
 // GinLambdaALB makes it easy to send ALB proxy events to a Gin
@@ -45,7 +45,6 @@ func (g *GinLambdaALB) ProxyWithContext(ctx context.Context, req events.ALBTarge
 }
 
 func (g *GinLambdaALB) proxyInternal(req *http.Request, err error) (events.ALBTargetGroupResponse, error) {
-
 	if err != nil {
 		return core.GatewayTimeoutALB(), core.NewLoggedError("Could not convert proxy event to request: %v", err)
 	}
