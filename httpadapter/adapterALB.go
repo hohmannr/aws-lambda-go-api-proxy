@@ -32,7 +32,7 @@ func (h *HandlerAdapterALB) Proxy(event events.ALBTargetGroupRequest) (events.AL
 // transforms them into an http.Request object, and sends it to the http.Handler for routing.
 // It returns a proxy response object generated from the http.ResponseWriter.
 func (h *HandlerAdapterALB) ProxyWithContext(ctx context.Context, event events.ALBTargetGroupRequest) (events.ALBTargetGroupResponse, error) {
-	fmt.Printf("request: %v\n", event) // TODO: remove
+	fmt.Printf("request: %#v\n", event) // TODO: remove
 	req, err := h.EventToRequestWithContext(ctx, event)
 	return h.proxyInternal(req, err)
 }
@@ -49,6 +49,7 @@ func (h *HandlerAdapterALB) proxyInternal(req *http.Request, err error) (events.
 	if err != nil {
 		return core.GatewayTimeoutALB(), core.NewLoggedError("Error while generating proxy response: %v", err)
 	}
+	resp.Headers = map[string]string{}  // TODO: quick fix?
 	fmt.Printf("response: %#v\n", resp) // TODO: remove
 
 	return resp, nil
