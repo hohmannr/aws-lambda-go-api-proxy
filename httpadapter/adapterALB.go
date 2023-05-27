@@ -49,7 +49,7 @@ func (h *HandlerAdapterALB) proxyInternal(req *http.Request, err error) (events.
 	if err != nil {
 		return core.GatewayTimeoutALB(), core.NewLoggedError("Error while generating proxy response: %v", err)
 	}
-	fmt.Printf("response: %v\n", resp) // TODO: remove
+	fmt.Printf("response: %#v\n", resp) // TODO: remove
 
 	return resp, nil
 }
