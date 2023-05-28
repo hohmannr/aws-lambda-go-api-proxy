@@ -2,6 +2,7 @@ package httpadapter
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -47,6 +48,9 @@ func (h *HandlerAdapterALB) proxyInternal(req *http.Request, err error) (events.
 	if err != nil {
 		return core.GatewayTimeoutALB(), core.NewLoggedError("Error while generating proxy response: %v", err)
 	}
+
+	// TODO: remove
+	fmt.Printf("%#v", resp)
 
 	return resp, nil
 }
