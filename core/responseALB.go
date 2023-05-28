@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
 	"unicode/utf8"
 
@@ -101,14 +102,19 @@ func (r *ProxyResponseWriterALB) GetProxyResponse() (events.ALBTargetGroupRespon
 		isBase64 = true
 	}
 
-	return events.ALBTargetGroupResponse{
+	resp := events.ALBTargetGroupResponse{
 		StatusCode:        r.status,
 		StatusDescription: http.StatusText(r.status),
 		Headers:           singletonHeadersALB(r.headers),
 		MultiValueHeaders: multitonHeadersALB(r.headers),
 		Body:              output,
 		IsBase64Encoded:   isBase64,
-	}, nil
+	}
+
+	// TODO: remove
+	fmt.Printf("%#v", resp)
+
+	return resp, nil
 }
 
 // multitonHeadersALB returns all mutli-value (multiton) header key-value-pairs.
