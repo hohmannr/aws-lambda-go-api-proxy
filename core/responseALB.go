@@ -32,7 +32,6 @@ func NewProxyResponseWriterALB() *ProxyResponseWriterALB {
 		statusText: http.StatusText(defaultStatusCode),
 		observers:  make([]chan<- bool, 0),
 	}
-
 }
 
 func (r *ProxyResponseWriterALB) CloseNotify() <-chan bool {
@@ -105,8 +104,39 @@ func (r *ProxyResponseWriterALB) GetProxyResponse() (events.ALBTargetGroupRespon
 	return events.ALBTargetGroupResponse{
 		StatusCode:        r.status,
 		StatusDescription: http.StatusText(r.status),
-		MultiValueHeaders: http.Header(r.headers),
+		Headers:           singletonHeadersALB(r.headers),
+		MultiValueHeaders: multitonHeadersALB(r.headers),
 		Body:              output,
 		IsBase64Encoded:   isBase64,
 	}, nil
+}
+
+// multitonHeadersALB returns all mutli-value (multiton) header key-value-pairs.
+func multitonHeadersALB(h http.Header) http.Header {
+	out := make(http.Header)
+	for key, vals := range h {
+		if len(vals) <= 1 {
+			continue
+		}
+
+		for _, val := range vals {
+			out.Set(key, val)
+		}
+	}
+
+	return out
+}
+
+// singletonHeadersALB returns all single-value (singleton) header key-value-pairs.
+func singletonHeadersALB(h http.Header) map[string]string {
+	out := make(map[string]string)
+	for key, vals := range h {
+		if len(vals) != 1 {
+			continue
+		}
+
+		out[key] = vals[0]
+	}
+
+	return out
 }
