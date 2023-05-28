@@ -134,7 +134,7 @@ func (r *RequestAccessorALB) EventToRequest(req events.ALBTargetGroupRequest) (*
 		path += "?" + queryString
 	} else if len(req.QueryStringParameters) > 0 {
 		// Support `QueryStringParameters` for backward compatibility.
-		// https://github.com/awslabs/aws-lambda-go-api-proxy/issues/37
+		// https://github.com/hohmannr/aws-lambda-go-api-proxy/issues/37
 		queryString := ""
 		for q := range req.QueryStringParameters {
 			if queryString != "" {
@@ -150,7 +150,6 @@ func (r *RequestAccessorALB) EventToRequest(req events.ALBTargetGroupRequest) (*
 		path,
 		bytes.NewReader(decodedBody),
 	)
-
 	if err != nil {
 		fmt.Printf("Could not convert request %s:%s to http.Request\n", req.HTTPMethod, req.Path)
 		log.Println(err)

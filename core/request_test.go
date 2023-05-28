@@ -10,7 +10,7 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -94,7 +94,7 @@ var _ = Describe("RequestAccessor tests", func() {
 		})
 
 		// Support `QueryStringParameters` for backward compatibility.
-		// https://github.com/awslabs/aws-lambda-go-api-proxy/issues/37
+		// https://github.com/hohmannr/aws-lambda-go-api-proxy/issues/37
 		qsRequest := getProxyRequest("/hello", "GET")
 		qsRequest.QueryStringParameters = map[string]string{
 			"hello": "1",
@@ -305,7 +305,6 @@ var _ = Describe("RequestAccessor tests", func() {
 		})
 
 		It("Populates the default hostname correctly", func() {
-
 			basicRequest := getProxyRequest("orders", "GET")
 			basicRequest.RequestContext = getRequestContext()
 			accessor := core.RequestAccessor{}

@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 	"github.com/labstack/echo/v4"
 )
 
@@ -45,7 +45,6 @@ func (e *EchoLambda) ProxyWithContext(ctx context.Context, req events.APIGateway
 }
 
 func (e *EchoLambda) proxyInternal(req *http.Request, err error) (events.APIGatewayProxyResponse, error) {
-
 	if err != nil {
 		return core.GatewayTimeout(), core.NewLoggedError("Could not convert proxy event to request: %v", err)
 	}

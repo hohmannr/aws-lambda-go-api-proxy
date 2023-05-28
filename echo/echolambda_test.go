@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/aws/aws-lambda-go/events"
-	echoadapter "github.com/awslabs/aws-lambda-go-api-proxy/echo"
+	echoadapter "github.com/hohmannr/aws-lambda-go-api-proxy/echo"
 	"github.com/labstack/echo/v4"
 
 	. "github.com/onsi/ginkgo"
@@ -82,7 +82,8 @@ var _ = Describe("EchoLambdaALB tests", func() {
 				Path:       "/ping",
 				RequestContext: events.ALBTargetGroupRequestContext{
 					ELB: events.ELBContext{TargetGroupArn: " ad"},
-				}}
+				},
+			}
 
 			resp, err := adapter.Proxy(req)
 

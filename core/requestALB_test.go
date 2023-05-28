@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"strings"
 
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambdacontext"
@@ -28,7 +28,7 @@ var _ = Describe("RequestAccessorALB tests", func() {
 		mvh["host"] = []string{"lambda-test-alb-1234567.us-east-1.elb.amazonaws.com"}
 		hdr["header1"] = "Testhdr1"
 		hdr["header2"] = "Testhdr2"
-		//multivalue querystrings
+		// multivalue querystrings
 		mvqs["k1"] = []string{"t1"}
 		mvqs["k2"] = []string{"t2"}
 		bdy := "Test BODY"
@@ -46,7 +46,6 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			Expect(3).To(Equal(len(mvhs)))
 			mvqs := basicRequest.MultiValueQueryStringParameters
 			Expect(0).To(Equal(len(mvqs)))
-
 		})
 
 		binaryBody := make([]byte, 256)
@@ -69,7 +68,6 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			Expect("POST").To(Equal(httpReq.Method))
 
 			Expect(err).To(BeNil())
-
 		})
 
 		mqsRequest := getALBProxyRequest("/hello", "GET", getALBRequestContext(), false, hdr, bdy, qs, mvh, nil)
@@ -92,7 +90,6 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			Expect(1).To(Equal(len(query["hello"])))
 			Expect("1").To(Equal(query["hello"][0]))
 			Expect("2").To(Equal(query["world"][0]))
-
 		})
 
 		qsRequest := getALBProxyRequest("/hello", "GET", getALBRequestContext(), false, hdr, bdy, qs, mvh, nil)
@@ -137,13 +134,13 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			for k, value := range headers {
 				Expect(value).To(Equal(mvhRequest.MultiValueHeaders[strings.ToLower(k)]))
 			}
-
 		})
 		// If multivaluehaders are set then it only passes the multivalue headers to the http.Request
 		svhRequest := getALBProxyRequest("/hello", "GET", getALBRequestContext(), false, hdr, bdy, qs, mvh, mvqs)
 		svhRequest.Headers = map[string]string{
 			"header1": "Testhdr1",
-			"header2": "Testhdr2"}
+			"header2": "Testhdr2",
+		}
 
 		It("Populates single value headers correctly", func() {
 			httpReq, err := accessor.EventToRequestWithContext(context.Background(), svhRequest)
@@ -157,7 +154,6 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			for k, value := range headers {
 				Expect(value).To(Equal(mvhRequest.MultiValueHeaders[strings.ToLower(k)]))
 			}
-
 		})
 
 		basePathRequest := getALBProxyRequest("/app1/orders", "GET", getALBRequestContext(), false, hdr, bdy, qs, mvh, nil)
@@ -254,13 +250,13 @@ var _ = Describe("RequestAccessorALB tests", func() {
 			runtimeContext, ok = core.GetRuntimeContextFromContextALB(httpReq.Context())
 			Expect(ok).To(BeTrue())
 			Expect(runtimeContext).ToNot(BeNil())
-
 		})
 	})
 })
 
 func getALBProxyRequest(path string, method string, requestCtx events.ALBTargetGroupRequestContext,
-	is64 bool, header map[string]string, body string, qs map[string]string, mvh map[string][]string, mvqsp map[string][]string) events.ALBTargetGroupRequest {
+	is64 bool, header map[string]string, body string, qs map[string]string, mvh map[string][]string, mvqsp map[string][]string,
+) events.ALBTargetGroupRequest {
 	return events.ALBTargetGroupRequest{
 		HTTPMethod:                      method,
 		Path:                            path,

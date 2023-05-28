@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/awslabs/aws-lambda-go-api-proxy/gorillamux"
 	"github.com/gorilla/mux"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/gorillamux"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -37,7 +37,8 @@ var _ = Describe("GorillaMuxAdapterALB tests", func() {
 				Path:       "/",
 				RequestContext: events.ALBTargetGroupRequestContext{
 					ELB: events.ELBContext{TargetGroupArn: " ad"},
-				}}
+				},
+			}
 
 			homePageResp, homePageReqErr := adapter.ProxyWithContext(context.Background(), homePageReq)
 
@@ -50,7 +51,8 @@ var _ = Describe("GorillaMuxAdapterALB tests", func() {
 				Path:       "/products",
 				RequestContext: events.ALBTargetGroupRequestContext{
 					ELB: events.ELBContext{TargetGroupArn: " ad"},
-				}}
+				},
+			}
 
 			productsPageResp, productsPageReqErr := adapter.Proxy(productsPageReq)
 

@@ -8,8 +8,8 @@ import (
 	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/awslabs/aws-lambda-go-api-proxy/core"
 	"github.com/gin-gonic/gin"
+	"github.com/hohmannr/aws-lambda-go-api-proxy/core"
 )
 
 // GinLambda makes it easy to send API Gateway proxy events to a Gin
@@ -45,7 +45,6 @@ func (g *GinLambda) ProxyWithContext(ctx context.Context, req events.APIGatewayP
 }
 
 func (g *GinLambda) proxyInternal(req *http.Request, err error) (events.APIGatewayProxyResponse, error) {
-
 	if err != nil {
 		return core.GatewayTimeout(), core.NewLoggedError("Could not convert proxy event to request: %v", err)
 	}
