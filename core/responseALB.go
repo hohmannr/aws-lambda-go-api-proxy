@@ -126,7 +126,7 @@ func multitonHeadersALB(h http.Header) http.Header {
 		}
 
 		for _, val := range vals {
-			out.Set(key, val)
+			out.Add(key, val)
 		}
 	}
 
